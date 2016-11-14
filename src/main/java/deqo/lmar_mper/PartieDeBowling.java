@@ -5,13 +5,18 @@ package deqo.lmar_mper;
  */
 public class PartieDeBowling {
 
-    /* Une partie de Bowling est composée de plusieurs joueurs */
-    private Joueur partie[];
+    /**
+     * Une partie de Bowling est composée de plusieurs joueurs.
+     */
+    private Joueur[] partie;
 
 
-    /* Constructeur de la classe PartieDeBowling */
-    public PartieDeBowling (int nbJoueurs)
-    {
+    /**
+     * Constructeur de la classe PartieDeBowling.
+     *
+     * @param nbJoueurs : nombre de joueurs pour la partie de bowling.
+     */
+    public PartieDeBowling(final int nbJoueurs) {
         partie = new Joueur[nbJoueurs];
     }
 }
