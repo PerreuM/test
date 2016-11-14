@@ -83,4 +83,52 @@ public class JoueurTest extends TestCase {
         assertFalse("Nombre de spares pas valide", marty.nbSparesValide());
     }
 
+    @Test
+    public void testScoreStrikes() throws Exception {
+        Joueur marty = new Joueur("XXXXXXXXXXXX");
+
+        assertEquals(300, marty.calculerScore());
+    }
+
+    @Test
+    public void testScoreSansBonus() throws Exception {
+        Joueur marty = new Joueur("9_9_9_9_9_9_9_9_9_9_");
+
+        assertEquals(90, marty.calculerScore());
+    }
+
+    @Test
+    public void testScoreSpares() throws Exception {
+        Joueur marty = new Joueur("5/5/5/5/5/5/5/5/5/5/5");
+
+        assertEquals(150, marty.calculerScore());
+    }
+
+    @Test
+    public void testScoreStrikesSpares1() throws Exception {
+        Joueur marty = new Joueur("5/XX5/5/1_1_2_3_4_");
+
+        assertEquals(102, marty.calculerScore());
+    }
+
+    @Test
+    public void testScoreStrikesSpares2() throws Exception {
+        Joueur marty = new Joueur("5/XX1_5/1_1_2_3_4_");
+
+        assertEquals(80, marty.calculerScore());
+    }
+
+    @Test
+    public void testScoreStrikesSpares3() throws Exception {
+        Joueur marty = new Joueur("5/X1_1_5/1_1_2_3_4_");
+
+        assertEquals(56, marty.calculerScore());
+    }
+
+    @Test
+    public void testScoreStrikesSpares4() throws Exception {
+        Joueur marty = new Joueur("5/X5/1_1_1_1_2_3_4_");
+
+        assertEquals(60, marty.calculerScore());
+    }
 }
