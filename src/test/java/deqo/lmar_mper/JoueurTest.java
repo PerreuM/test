@@ -9,7 +9,7 @@ public class JoueurTest extends TestCase {
     public void testSequenceValide() throws Exception {
 
         /* "5/ X X 46 2/ 3/ X __ 9_ 5/X" */
-        Joueur marty = new Joueur("5/XX462/3/X__9_5/X");
+        Joueur marty = new Joueur("5/XX452/3/X__9_5/X");
 
         assertTrue("La séquence est valide", marty.sequenceValide());
     }
@@ -20,7 +20,7 @@ public class JoueurTest extends TestCase {
         /* "5/ X X 46 2/ 3/ X __ 9_ 5/X" */
         Joueur marty = new Joueur("5/XX462/3/X__9_5/X3/3/2/3/1/4/5/6/9/");
 
-        assertFalse("La séquence est valide", marty.sequenceValide());
+        assertFalse("La séquence est pas valide", marty.sequenceValide());
     }
 
 
@@ -30,7 +30,26 @@ public class JoueurTest extends TestCase {
         /* "5/ X X 46 2/ 3/ X __ 9_ 5/X" */
         Joueur marty = new Joueur("5/XX462/3/X__9_5/XXXXXXXXXXX");
 
-        assertFalse("La séquence est valide", marty.sequenceValide());
+        assertFalse("La séquence est pas valide", marty.sequenceValide());
+    }
+
+
+    @Test
+    public void testSequenceNonValideJeux() throws Exception {
+
+        /* "5/ X X 46 2/ 3/ X __ 9_ 5/X" */
+        Joueur marty = new Joueur("5/XX462/3/X__9_5/XX");
+
+        assertFalse("La séquence est pas valide", marty.sequenceValide());
+    }
+
+    @Test
+    public void testSequenceNonValideLancers() throws Exception {
+
+        /* "5/ X X 46 2/ 3/ X __ 9_ 5/X" */
+        Joueur marty = new Joueur("5/XX462/3/X__9_5/XX5555555");
+
+        assertFalse("La séquence est pas valide", marty.sequenceValide());
     }
 
     @Test
@@ -81,6 +100,106 @@ public class JoueurTest extends TestCase {
         Joueur marty = new Joueur("5/5/5/5/5/5/5/5/5/5/5/5/5/");
 
         assertFalse("Nombre de spares pas valide", marty.nbSparesValide());
+    }
+
+
+    @Test
+    public void testNbJeuxValideStrikes() throws Exception {
+
+        Joueur marty = new Joueur("XXXXXXXXXXXX");
+
+        assertTrue("Nombre de jeux valide", marty.nbJeuxValide());
+    }
+
+    @Test
+    public void testNbJeuxValideSpares() throws Exception {
+
+        Joueur marty = new Joueur("5/5/5/5/5/5/5/5/5/5/5");
+
+        assertTrue("Nombre de jeux valide", marty.nbJeuxValide());
+    }
+
+    @Test
+    public void testNbJeuxValideNombres() throws Exception {
+
+        Joueur marty = new Joueur("52545351525152535452");
+
+        assertTrue("Nombre de jeux valide", marty.nbJeuxValide());
+    }
+
+
+    @Test
+    public void testNbJeuxNonValideStrikes() throws Exception {
+
+        Joueur marty = new Joueur("XXXXXXXXXXXXXXXXXXX");
+
+        assertFalse("Nombre de jeux pas valide", marty.nbJeuxValide());
+    }
+
+
+    @Test
+    public void testNbJeuxNonValideSpares() throws Exception {
+
+        Joueur marty = new Joueur("5/5/5/5/5/5/5/5/5/5/5/5/5/5/5/5/5");
+
+        assertFalse("Nombre de jeux pas valide", marty.nbJeuxValide());
+    }
+
+    @Test
+    public void testNbJeuxNonValideNombres() throws Exception {
+
+        Joueur marty = new Joueur("5254535152515253545251525354");
+
+        assertFalse("Nombre de jeux pas valide", marty.nbJeuxValide());
+    }
+
+    @Test
+    public void testLancersValide() throws Exception {
+
+        Joueur marty = new Joueur("5254535152515253545/2");
+
+        assertTrue("Nombre de lancers valide", marty.nbLancersValide());
+    }
+
+    @Test
+    public void testLancersNonValide() throws Exception {
+
+        Joueur marty = new Joueur("5254535152515253545/24");
+
+        assertFalse("Nombre de lancers pas valide", marty.nbLancersValide());
+    }
+
+    @Test
+    public void testPasCoherent1() throws Exception {
+
+        Joueur marty = new Joueur("//XX452/3/X__9_5/X");
+
+        assertFalse("Pas coherent : spare à la premiere position", marty.sequenceCoherente());
+    }
+
+    @Test
+    public void testPasCoherent2() throws Exception {
+
+        Joueur marty = new Joueur("5/XX462/3/X__9_5/X");
+
+        assertFalse("Pas coherent : 4 + 6 > 9", marty.sequenceCoherente());
+    }
+
+
+    @Test
+    public void testPasCoherent3() throws Exception {
+
+        Joueur marty = new Joueur("5/XX/2/3/X__9_5/X");
+
+        assertFalse("Pas coherent", marty.sequenceCoherente());
+    }
+
+    @Test
+    public void testPasCoherent4() throws Exception {
+
+        Joueur marty = new Joueur("5/XX//2/3/X__9_5/X");
+
+        assertFalse("Pas coherent", marty.sequenceCoherente());
     }
 
     @Test

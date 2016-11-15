@@ -23,6 +23,12 @@ public class Joueur {
     private static final int NB_MAX_SPARES = 10;
 
     /**
+     * Le nombre de spare maximum dans une partie est de 10.
+     */
+    private static final int NB_MAX_LANCERS = 21;
+
+
+    /**
      * Constante de bonus.
      */
     private static final int BONUS = 10;
@@ -36,11 +42,6 @@ public class Joueur {
      * Représente la séquence de lancer de l'utilisateur.
      */
     private String sequenceLancers;
-
-    /**
-     * Nombre de jeux effectués.
-     */
-    private int jeux = 0;
 
     /**
      * Score du joueur.
@@ -71,9 +72,11 @@ public class Joueur {
 
         boolean resultat = true;
 
-        /* On vérifie d'abord que le nombre de strikes et de spares
-        soit correct */
-        resultat = nbStrikesValide() && nbSparesValide();
+        /* On vérifie d'abord que le nombre de strikes, de spares
+        et de jeux soit correct */
+        resultat = nbStrikesValide() && nbSparesValide()
+                && nbLancersValide() && nbJeuxValide()
+                && sequenceCoherente();
 
         /* On s'occupe ensuite de la cohérence de la séquence */
 
@@ -126,6 +129,142 @@ public class Joueur {
 
         return (nbSpares <= NB_MAX_SPARES);
     }
+
+
+    /**
+     * Fonction qui retourne true si le nombre
+     * de jeux est valide, false sinon.
+     *
+     * @return boolean
+     */
+    public final boolean nbJeuxValide() {
+
+        int taille = sequenceLancers.length();
+        int nbJeux = 0;
+        boolean dernierJeux = false;
+        boolean precedentEstUnChiffre = false;
+
+        for (int i = 0; i < taille; i++) {
+
+            char c = sequenceLancers.charAt(i);
+
+            if (c == 'X') {
+
+                if (!dernierJeux) {
+                    if (i == taille - 3) {
+                        dernierJeux = true;
+                        nbJeux++;
+                    } else {
+                        nbJeux++;
+                        precedentEstUnChiffre = false;
+                    }
+                }
+            } else if(c == '/') {
+                if (i == taille - 2) {
+                    dernierJeux = true;
+                    nbJeux++;
+                } else {
+                    nbJeux++;
+                    precedentEstUnChiffre = false;
+                }
+            } else {
+                if(!dernierJeux) {
+                    if (i == taille - 2) {
+                        dernierJeux = true;
+                        nbJeux++;
+                    }
+                    else {
+                        if (precedentEstUnChiffre) {
+                            nbJeux++;
+                            precedentEstUnChiffre = false;
+                        } else {
+                            precedentEstUnChiffre = true;
+                        }
+                    }
+
+                }
+
+            }
+        }
+
+        return (nbJeux == NB_JEUX);
+    }
+
+
+    /**
+     * Fonction qui retourne true si le nombre
+     * de lancers est valide, false sinon.
+     *
+     * @return boolean
+     */
+    public final boolean nbLancersValide() {
+
+        return (sequenceLancers.length() <= NB_MAX_LANCERS);
+    }
+
+
+    /**
+     * Fonction qui retourne true si la sequence
+     * est cohérente, false sinon.
+     *
+     * @return boolean
+     */
+    public final boolean sequenceCoherente() {
+
+        boolean coherence = true;
+        char precedent;
+        boolean dernierJeux = false;
+        int taille = sequenceLancers.length();
+        boolean premierLancerJeu = true;
+
+        for (int i = 0; i < taille; i++) {
+
+            char c = sequenceLancers.charAt(i);
+
+            if (c == '/') {
+                if (i == 0) {
+                    return false;
+                }
+
+                precedent = sequenceLancers.charAt(i-1);
+
+                if (precedent == '/' || precedent == 'X')
+                {
+                    return false;
+                }
+
+                premierLancerJeu = true;
+            } else if (c == 'X') {
+                premierLancerJeu = true;
+            } else {
+
+                if (!premierLancerJeu) {
+                    precedent = sequenceLancers.charAt(i-1);
+
+                    int val1 = Character.getNumericValue(c);
+                    int val2;
+                    if (precedent == '_') {
+                        val2 = 0;
+                    } else {
+                        val2 = Character.getNumericValue(precedent);
+                    }
+
+                    int res = val1+val2;
+
+                    if(res > 9) {
+                        return false;
+                    } else {
+                        System.out.println (val1 + "+" + val2 + "=" + res  );
+                    }
+                } else {
+                    premierLancerJeu = false;
+                }
+            }
+        }
+
+        return coherence;
+    }
+
 
     /**
      * Fonction qui calcule le score.
