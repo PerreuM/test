@@ -10,6 +10,8 @@ public class Joueur {
 
     /********** Fichier modifié **********/
 
+    private String testBranch = "";
+
     /**
      * Constante de nombre de jeux maximum pour un joueur.
      */
