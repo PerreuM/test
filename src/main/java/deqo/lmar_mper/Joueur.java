@@ -7,6 +7,9 @@ import java.util.ArrayList;
  */
 public class Joueur {
 
+
+    /********** Fichier modifié **********/
+
     /**
      * Constante de nombre de jeux maximum pour un joueur.
      */
